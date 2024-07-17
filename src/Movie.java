@@ -9,8 +9,8 @@ public class Movie {
     private String genre;
     private Date releaseDate;
 
-    private List<String> actors = new ArrayList<>();
-    private List<String> directors = new ArrayList<>();
+    private List<Actor> actors = new ArrayList<>();
+    private List<Director> directors = new ArrayList<>();
 
     private double rating; //optional
     private int votes;
@@ -24,12 +24,12 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
-    public void addActor(String actor){
+    public void addActor(Actor actor){
         this.actors.add(actor);
         return;
     }
 
-    public void addDirector(String director){
+    public void addDirector(Director director){
         this.directors.add(director);
         return;
     }
@@ -61,5 +61,25 @@ public class Movie {
 
     public String getTitle(){
         return this.title;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getPlot() {
+        return plot;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    public boolean isRatingSet() {
+        return isRatingSet;
     }
 }

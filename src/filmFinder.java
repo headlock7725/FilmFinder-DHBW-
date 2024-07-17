@@ -14,6 +14,7 @@ public class filmFinder{
 
     private static List<Actor> actors = new ArrayList<>();
     private static List<Movie> movies = new ArrayList<>();
+    private static List<Director> directors = new ArrayList<>();
     
     public static void main(String[] args) {
         importDatabase("/Users/bazzman/Projects/JavaClassDHBW/db/movieproject2024.db.txt");
@@ -33,7 +34,9 @@ public class filmFinder{
         try {
             List<String> lines = Files.readAllLines(Paths.get(filepath), StandardCharsets.UTF_8);
             for (String line : lines) {
-                int entityId = -1;
+                final int[] entityId = { -1 };
+                final int[] secondEntityID = { -1 };
+
                 List<String> entityData = new ArrayList<>();
 
                 if (line.contains("New_Entity")){
@@ -50,11 +53,18 @@ public class filmFinder{
                 }
 
                 try{
-                    entityId = Integer.parseInt(entityData.get(0));
+                    entityId[0] = Integer.parseInt(entityData.get(0));
                 }
                 catch(NumberFormatException e) {
                     System.out.println(String.format("Invalid integer format LINE: \n%s", line));
                     continue;
+                }
+
+                try{
+                    secondEntityID[0] = Integer.parseInt(entityData.get(1));
+                }
+                catch(NumberFormatException e) {
+                    ;
                 }
 
                 switch (entityIndex) {
@@ -62,7 +72,7 @@ public class filmFinder{
                         //check if actor already exists via stream and lambda function
                         boolean actorAlreadyExists = actors.stream().anyMatch(actor -> actor.getName() == entityData.get(1));
                         if (!actorAlreadyExists){
-                            actors.add(new Actor(entityId, entityData.get(1)));
+                            actors.add(new Actor(entityId[0], entityData.get(1)));
                         }
                         break;
                     case 1:
@@ -78,12 +88,36 @@ public class filmFinder{
                         
                         boolean movieAlreadyExists = movies.stream().anyMatch(movie -> movie.getTitle() == entityData.get(1));
                         if (!movieAlreadyExists){
-                            Movie newMovie = new Movie(entityId, entityData.get(1), entityData.get(2), entityData.get(3), releaseDate);
+                            Movie newMovie = new Movie(entityId[0], entityData.get(1), entityData.get(2), entityData.get(3), releaseDate);
                             movies.add(newMovie);
                         }
                         break;
-                    default:
+                    case 2:
+                        directors.add(new Director(entityId[0], entityData.get(1)));
                         break;
+                    case 3:
+                        Actor actorEntity = actors.stream().filter(actor -> actor.getId() == entityId[0]).findFirst().orElse(null);
+                        Movie movieEntity = movies.stream().filter(movie -> movie.getId() == secondEntityID[0]).findFirst().orElse(null);
+
+                        if (actorEntity != null && movieEntity != null){
+                            actorEntity.addMovie(movieEntity);
+                            movieEntity.addActor(actorEntity);
+                        }
+
+                        break;
+
+                    case 4:
+                        Director directorEntity = directors.stream().filter(director -> director.getId() == entityId[0]).findFirst().orElse(null);
+                        movieEntity = movies.stream().filter(movie -> movie.getId() == secondEntityID[0]).findFirst().orElse(null);
+                        
+                        if (directorEntity != null && movieEntity != null){
+                            directorEntity.addMovie(movieEntity);
+                            movieEntity.addDirector(directorEntity);
+                        }
+                        break;
+
+                    default:
+                        System.out.println("ERR: ENTITY IN DATABASE OUT OF SCOPE (>5 Entries)");
                 }
             }
         } catch (IOException e) {
