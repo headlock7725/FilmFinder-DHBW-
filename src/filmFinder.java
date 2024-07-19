@@ -9,7 +9,7 @@ public class filmFinder{
     
     public static void main(String[] args) {
         dataProcessor.importDatabase("/Users/bazzman/Projects/JavaClassDHBW/db/movieproject2024.db");
-        filmSearch("Matrix");
+        actorSearch("Smith");
         if (args.length == 0) {
             throw new IllegalArgumentException("No command-line arguments provided.");
         }
@@ -46,6 +46,21 @@ public class filmFinder{
             }
 
             System.out.println(String.format("-------------------------------------", filteredMovies.size()));
+        }
+    }
+
+    public static void actorSearch(String serachString){
+        List<Actor> actors = dataProcessor.getActors();
+        List<Actor> filteredActors = actors.stream().filter(actor -> actor.getName().contains(serachString)).toList();
+        System.out.println(String.format("-----------Found %d Entries-----------", filteredActors.size()));
+
+        for (Actor foundActor : filteredActors){
+            System.out.println("ID: " + foundActor.getId());
+            System.out.println("Name: " + foundActor.getName());
+            System.out.println("Movies: " + foundActor.getMovies().stream()
+                .map(movie -> movie.toString())
+                .collect(Collectors.joining("|")));
+            System.out.println(String.format("-------------------------------------", filteredActors.size()));
         }
     }
 

@@ -24,5 +24,7 @@ public class Actor {
         movies.add(newMovie);
     }
 
-    
+    public List<Movie> getMovies() {
+        return movies;
+    }
 }

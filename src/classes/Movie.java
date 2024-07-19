@@ -91,4 +91,8 @@ public class Movie {
     public List<Director> getDirectors() {
         return directors;
     }
+
+    public String toString(){
+        return String.format("%d - %s", id, title);
+    }
 }
