@@ -93,6 +93,6 @@ public class Movie {
     }
 
     public String toString(){
-        return String.format("%d - %s", id, title);
+        return String.format("%s(%d)", title, id);
     }
 }

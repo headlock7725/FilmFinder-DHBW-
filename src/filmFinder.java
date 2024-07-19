@@ -1,4 +1,5 @@
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,7 +10,7 @@ public class filmFinder{
     
     public static void main(String[] args) {
         dataProcessor.importDatabase("/Users/bazzman/Projects/JavaClassDHBW/db/movieproject2024.db");
-        actorSearch("Smith");
+        actorNetwork(17562);
         if (args.length == 0) {
             throw new IllegalArgumentException("No command-line arguments provided.");
         }
@@ -62,6 +63,66 @@ public class filmFinder{
                 .collect(Collectors.joining("|")));
             System.out.println(String.format("-------------------------------------", filteredActors.size()));
         }
+    }
+
+    public static void movieNetwork(int searchID){
+        List<Movie> movies = dataProcessor.getMovies();
+        Movie foundMovie = movies.stream().filter(movie -> movie.getId() == searchID).findFirst().orElse(null);
+
+        if (foundMovie == null){
+            System.out.println("No movie with this ID found - " + searchID);
+            return;
+        }
+
+        List<Actor> allActors = foundMovie.getActors();
+        List<Movie> allMovies = new ArrayList<>();
+
+        for (Actor actor : allActors){
+            allMovies.addAll(
+                actor.getMovies().stream()
+                .filter(movie -> !allMovies.contains(movie)).toList()
+            );
+        }
+
+        System.out.println("Filme: " + allMovies.stream()
+            .map(movie -> movie.toString())
+            .collect(Collectors.joining(", "))
+        );
+
+        System.out.println("Schauspieler: " + allActors.stream()
+            .map(actor -> actor.getName())
+            .collect(Collectors.joining(", "))
+        );
+    }
+
+    public static void actorNetwork(int searchID){
+        List<Actor> actors = dataProcessor.getActors();
+        Actor foundActor = actors.stream().filter(actor -> actor.getId() == searchID).findFirst().orElse(null);
+
+        if (foundActor == null){
+            System.out.println("No actor with this ID found - " + searchID);
+            return;
+        }
+        
+        List<Actor> allActors = new ArrayList<>();
+        List<Movie> allMovies = foundActor.getMovies();
+
+        for (Movie actorMovie : allMovies){
+            allActors.addAll(
+                actorMovie.getActors().stream()
+                .filter(actor -> !allActors.contains(actor)).toList()
+            );
+        }
+
+        System.out.println("Filme: " + allMovies.stream()
+            .map(movie -> movie.toString())
+            .collect(Collectors.joining(", "))
+        );
+
+        System.out.println("Schauspieler: " + allActors.stream()
+            .map(actor -> actor.getName())
+            .collect(Collectors.joining(", "))
+        );
     }
 
     
