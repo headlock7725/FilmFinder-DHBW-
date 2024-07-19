@@ -1,27 +1,11 @@
 package classes;
-import java.util.ArrayList;
+
 import java.util.List;
 
-public class Actor {
-    private int id;
-    private String name;
-    private List<Movie> movies = new ArrayList<>();
+public class Actor extends Person{
 
-    public Actor(int id, String name){
-        this.id = id;
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void addMovie(Movie newMovie){
-        movies.add(newMovie);
+    public Actor(int id, String name) {
+        super(id, name);
     }
 
     public List<Movie> getMovies() {
