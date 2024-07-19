@@ -1,5 +1,6 @@
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import classes.*;
 
@@ -21,15 +22,30 @@ public class filmFinder{
     public static void filmSearch(String serachString){
         List<Movie> movies = dataProcessor.getMovies();
         List<Movie> filteredMovies = movies.stream().filter(movie -> movie.getTitle().contains(serachString)).toList();
+        System.out.println(String.format("-----------Found %d Entries-----------", filteredMovies.size()));
 
         for (Movie foundMovie : filteredMovies){
-            System.out.println(String.format("-----------Found %d Entries-----------", filteredMovies.size()));
             System.out.println("ID: " + foundMovie.getId());
             System.out.println("Title: " + foundMovie.getTitle());
             System.out.println("Description: " + foundMovie.getPlot());
-            System.out.println("Actors: " + foundMovie.getId());
+
+            System.out.println("Actors: " + foundMovie.getActors().stream()
+                .map(actor -> actor.getName())
+                .collect(Collectors.joining(",")));
+
+            System.out.println("Director(s): " + foundMovie.getDirectors().stream()
+                .map(actor -> actor.getName())
+                .collect(Collectors.joining(",")));
+
             System.out.println("Genre: " + foundMovie.getGenre());
             System.out.println("Release Date: " + sdf.format(foundMovie.getReleaseDate()));
+
+            if (foundMovie.isRatingSet()){
+                System.out.println("IMDB Rating: " + foundMovie.getRating());
+                System.out.println("IMDB Votes: " + foundMovie.getVotes());
+            }
+
+            System.out.println(String.format("-------------------------------------", filteredMovies.size()));
         }
     }
 

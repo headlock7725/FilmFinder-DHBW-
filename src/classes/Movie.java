@@ -83,4 +83,12 @@ public class Movie {
     public boolean isRatingSet() {
         return isRatingSet;
     }
+
+    public List<Actor> getActors() {
+        return actors;
+    }
+
+    public List<Director> getDirectors() {
+        return directors;
+    }
 }

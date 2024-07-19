@@ -103,6 +103,17 @@ public class dataProcessor {
         boolean movieAlreadyExists = movies.stream().anyMatch(movie -> movie.getTitle().equals(data.get(1)));
         if (!movieAlreadyExists){
             Movie newMovie = new Movie(entityId, data.get(1), data.get(2), data.get(3), releaseDate);
+
+            try{
+                int imdbVotes = Integer.parseInt(data.get(5));
+                double imdbRating = Double.parseDouble(data.get(6));
+
+                newMovie.setRating(imdbRating, imdbVotes);
+            }
+            catch(NumberFormatException e){
+                ;
+            }
+
             movies.add(newMovie);
         }
     }
