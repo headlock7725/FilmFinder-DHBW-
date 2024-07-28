@@ -9,13 +9,28 @@ public class filmFinder{
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd"); //Date format for the whole Project
     
     public static void main(String[] args) {
-        dataProcessor.importDatabase("/Users/bazzman/Projects/JavaClassDHBW/db/movieproject2024.db");
-        actorNetwork(17562);
         if (args.length == 0) {
             throw new IllegalArgumentException("No command-line arguments provided.");
         }
         else{
-            dataProcessor.importDatabase(args[0]);
+            dataProcessor.importDatabase("db/movieproject2024.db");
+            
+            for (String arg : args){
+                System.err.println(arg);
+                String[] request = arg.split("=");
+                if (arg.contains("filmsuche")){
+                    filmSearch(request[1]);
+                }
+                else if (arg.contains("schauspielersuche")){
+                    actorSearch(request[1]);
+                }
+                else if (arg.contains("schauspielernetzwerk")){
+                    actorNetwork(Integer.parseInt(request[1]));
+                }
+                else if (arg.contains("filmnetzwerk")){
+                    actorSearch(request[1]);
+                }
+            }
         }
         
     }
