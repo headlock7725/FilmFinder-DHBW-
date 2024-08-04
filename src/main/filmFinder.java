@@ -14,7 +14,7 @@ public class filmFinder{
             throw new IllegalArgumentException("No command-line arguments provided.");
         }
         else{
-            dataProcessor.importDatabase("/Users/bazzman/Projects/JavaClassDHBW/db/movieproject2024.db"); //TODO: CHANGE PATH
+            dataProcessor.importDatabase("db/movieproject2024.db");
 
             for (String arg : args){
                 System.err.println(arg);

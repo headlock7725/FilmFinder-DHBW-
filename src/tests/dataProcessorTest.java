@@ -15,7 +15,7 @@ public class dataProcessorTest {
 
     @BeforeEach
     public void setUp() {
-        dataProcessor.importDatabase("/Users/bazzman/Projects/JavaClassDHBW/db/movieproject2024.db"); //TODO: CHANGE PATH
+        dataProcessor.importDatabase("db/movieproject2024.db");
     }
 
     @Test
