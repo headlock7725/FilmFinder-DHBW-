@@ -1,3 +1,4 @@
+package main;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +14,11 @@ public class filmFinder{
             throw new IllegalArgumentException("No command-line arguments provided.");
         }
         else{
-            dataProcessor.importDatabase("db/movieproject2024.db");
-            
+            dataProcessor.importDatabase("/Users/bazzman/Projects/JavaClassDHBW/db/movieproject2024.db"); //TODO: CHANGE PATH
+
             for (String arg : args){
                 System.err.println(arg);
-                String[] request = arg.split("=");
+                String[] request = arg.replace("\"", "").split("=");
                 if (arg.contains("filmsuche")){
                     filmSearch(request[1]);
                 }
@@ -28,11 +29,11 @@ public class filmFinder{
                     actorNetwork(Integer.parseInt(request[1]));
                 }
                 else if (arg.contains("filmnetzwerk")){
-                    actorSearch(request[1]);
+                    movieNetwork(Integer.parseInt(request[1]));
                 }
             }
         }
-        
+        System.out.println("DONE");
     }
 
     public static void filmSearch(String serachString){
@@ -95,7 +96,8 @@ public class filmFinder{
         for (Actor actor : allActors){
             allMovies.addAll(
                 actor.getMovies().stream()
-                .filter(movie -> !allMovies.contains(movie)).toList()
+                .filter(movie -> !allMovies.contains(movie))
+                .toList()
             );
         }
 

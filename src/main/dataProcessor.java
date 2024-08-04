@@ -1,3 +1,4 @@
+package main;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -83,7 +84,7 @@ public class dataProcessor {
     private static void processActor(int entityId, List<String> data){
         //check if actor already exists via stream and lambda function
         
-        boolean actorAlreadyExists = actors.stream().anyMatch(actor -> actor.getName().equals(data.get(1)));
+        boolean actorAlreadyExists = actors.stream().anyMatch(actor -> actor.getId() == Integer.parseInt(data.get(0)));
         if (!actorAlreadyExists){
             actors.add(new Actor(entityId, data.get(1)));
         }
@@ -100,7 +101,7 @@ public class dataProcessor {
             return;
         }
         
-        boolean movieAlreadyExists = movies.stream().anyMatch(movie -> movie.getTitle().equals(data.get(1)));
+        boolean movieAlreadyExists = movies.stream().anyMatch(movie -> movie.getId() == Integer.parseInt(data.get(0)));
         if (!movieAlreadyExists){
             Movie newMovie = new Movie(entityId, data.get(1), data.get(2), data.get(3), releaseDate);
 
